@@ -14,3 +14,8 @@ Along with the flow there are per environment logging settings.  This allows for
 To set a custom message for a log subflow just set the variable "logMessage" before calling one.
 
 Customize this based on customer needs.  It is also possible to externalize the log flow in to its own dependent asset if needed.  This has its own pros and cons with keeping projects up to date.
+
+## How To Use
+Before you can deploy the template to a target organzation's Anypoint Exchange (or other asset management system), you will need to update the pom.xml.  The main part to edit is the groupId at the top from "org-id-goes-here" to whatever unique identifier target org Exchange you will be deploying to.
+
+Next you may want to set the proper deployment target being used by organization.  To do this you just need to find the deployment target section that matches (like CloudHub 2.0) and change "skip" setting to "false".  This will ensure the Mule Maven plugin uses that as the target for deployments.  For organizations with more than one deployment target you may want to either make this configurable outside the pom or create multiple templates for different deployment targets.
