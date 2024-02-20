@@ -7,7 +7,7 @@ In building this API template I had several goals in mind:
 4.  Base property files for the usual environments (dev,qa, and prod) along with local and common (the later is shared regardless of environment).
 
 ## Logging
-To facilitate logging there is an included log flow in the template.  This has several subflows for various log levels (error, info, debug) which use the standard Mule log component.  The output of the log message will be in JSON format.  The reason for this is many logging systems prefer this over any other format to allow them to easily parse the content of messages.
+To facilitate logging there is an included log config in the template.  This has several subflows for various log levels (error, info, debug) which use the standard Mule log component.  The output of the log message will be in JSON format.  The reason for this is many logging systems prefer this over any other format to allow them to easily parse the content of messages.
 
 Along with the flow there are per environment logging settings.  This allows for per enviornment toggling if payloads are included in messages and attribute filtering.
 
