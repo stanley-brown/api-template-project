@@ -1,0 +1,6 @@
+# This makes Maven GAV accessible to Mule application for things like jrstrack:publishingSystem in event messages
+maven:
+  groupId: ${project.groupId}
+  artifactId: ${project.artifactId}
+  version: ${project.version}
+

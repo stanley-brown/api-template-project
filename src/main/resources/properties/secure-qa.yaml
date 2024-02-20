@@ -1,0 +1,3 @@
+tls:
+  key-password: "mule"
+  password: "mule"  

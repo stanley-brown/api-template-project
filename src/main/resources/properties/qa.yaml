@@ -1,0 +1,26 @@
+api:
+  id: ""  # Auto-discovery
+
+# The main flow of the API 
+autodiscovery.flow: "main"
+
+log:
+  includePayload: "true"    
+  attributes: "requestPath, method, queryParams"
+  
+https:
+  listener:
+    host: "0.0.0.0"
+    timeout:
+      connection-idle: "600000"
+  private:
+    port: "8092"
+  port: "8082"
+  request:
+    timeout:
+      connection-idle: "400000"
+      response: "40000"
+      
+tls:
+  path: "tls/mule.jks"
+  alias: "mule"

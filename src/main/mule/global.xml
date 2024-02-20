@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:cluster="http://www.mulesoft.org/schema/mule/ee/cluster"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd 
+">
+
+
+	<configuration-properties
+		doc:name="Common Configuration properties"
+		doc:id="04d86592-3f72-4d90-b00d-d5b9b5ccaebd"
+		file="properties\common.yaml"
+		doc:description="Common properties" />
+	<configuration-properties
+		doc:name="Environment Configuration properties"
+		doc:id="0b953c3b-775e-431c-9193-f5c040328150"
+		doc:description="Environment specific properties"
+		file="properties/${mule.env}.yaml" />
+	<secure-properties:config
+		name="secure-properties-config"
+		doc:name="Secure Configuration properties"
+		doc:id="9523b5c6-35ef-4b4d-8c00-536a2c86291d"
+		file="properties/secure-${mule.env}.yaml" key="${secure.key}" doc:description="Secure environment properties"/>
+	<tls:context name="tls-context" doc:name="TLS Context" doc:id="e4729b40-27d9-4a06-a40c-d090f712dfe6" >
+		<tls:trust-store insecure="true" />
+		<tls:key-store type="jks" path="${tls.path}" alias="${tls.alias}" keyPassword="${secure::tls.key-password}" password="${secure::tls.password}" />
+	</tls:context>
+   
+     <http:listener-config name="https-listener-config" doc:description="Configuration for HTTP/S Listener">
+        <http:listener-connection host="${https.listener.host}" port="${https.port}" protocol="HTTPS" tlsContext="tls-context">
+		</http:listener-connection>
+    </http:listener-config>
+    
+    <global-property doc:name="Global Property" doc:id="6622f7de-8f9e-462b-95be-e4db2fd4c2e9" name="mule.env" value="local" doc:description="Mule environment property"/>
+	<global-property doc:name="Global Property" doc:id="91894c46-960e-475d-ab09-da904edf64df" name="secure.key" value="1234567890123456" doc:description="Mule secure key property"/>
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="4b391e72-cfd8-4fb5-9acd-e71f36aa383a" flowRef="${autodiscovery.flow}"/>
+	<error-handler name="globalError_Handler" doc:id="15b66dcc-8092-4246-b139-596d7d7012e9" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5735542d-f4d5-4a24-a944-74ea13be6df1" >
+			<ee:transform doc:name="Transform Error Message" doc:id="3007688a-8ae6-43de-9d7a-560a4b0750af" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="logMessage" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"error": {
+		"description": error.description,
+		"type" : error.errorType
+	}
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Call Error Log Flow Reference" doc:id="403d1322-36cd-44ea-8ba2-838a2eb0bade" name="log-error-subFlow"/>
+		</on-error-propagate>
+	</error-handler>
+   
+</mule>
