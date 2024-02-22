@@ -40,6 +40,10 @@ output application/json
 } else {})
 ++ (if (!isBlank(p('log.attributes'))) { 
  	"attributes": dwOps::flattenObject(attributes,"") filterObject(p('log.attributes') splitBy(/,\s*/) contains $$ as String)
+} else {})
+++ (if (!isEmpty(error)) 	"error": {
+		"description": error.description,
+		"type" : error.errorType.namespace ++ ":" ++ error.errorType.identifier
 } else {})]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>

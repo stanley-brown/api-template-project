@@ -23,7 +23,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	<configuration-properties
 		doc:name="Common Configuration properties"
 		doc:id="04d86592-3f72-4d90-b00d-d5b9b5ccaebd"
-		file="properties\common.yaml"
+		file="properties/common.yaml"
 		doc:description="Common properties" />
 	<configuration-properties
 		doc:name="Environment Configuration properties"
@@ -37,11 +37,12 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		file="properties/secure-${mule.env}.yaml" key="${secure.key}" doc:description="Secure environment properties"/>
 	<tls:context name="tls-context" doc:name="TLS Context" doc:id="e4729b40-27d9-4a06-a40c-d090f712dfe6" >
 		<tls:trust-store insecure="true" />
-		<tls:key-store type="jks" path="${tls.path}" alias="${tls.alias}" keyPassword="${secure::tls.key-password}" password="${secure::tls.password}" />
+		<tls:key-store type="jceks" path="${tls.path}" alias="${tls.alias}" keyPassword="${secure::tls.key-password}" password="${secure::tls.password}" />
 	</tls:context>
    
      <http:listener-config name="https-listener-config" doc:description="Configuration for HTTP/S Listener">
         <http:listener-connection host="${https.listener.host}" port="${https.port}" protocol="HTTPS" tlsContext="tls-context">
+			<reconnection failsDeployment="true" />
 		</http:listener-connection>
     </http:listener-config>
     
@@ -49,22 +50,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	<global-property doc:name="Global Property" doc:id="91894c46-960e-475d-ab09-da904edf64df" name="secure.key" value="1234567890123456" doc:description="Mule secure key property"/>
 	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="4b391e72-cfd8-4fb5-9acd-e71f36aa383a" flowRef="${autodiscovery.flow}"/>
 	<error-handler name="globalError_Handler" doc:id="15b66dcc-8092-4246-b139-596d7d7012e9" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5735542d-f4d5-4a24-a944-74ea13be6df1" >
-			<ee:transform doc:name="Transform Error Message" doc:id="3007688a-8ae6-43de-9d7a-560a4b0750af" >
-				<ee:message >
-				</ee:message>
-				<ee:variables >
-					<ee:set-variable variableName="logMessage" ><![CDATA[%dw 2.0
-output application/json
----
-{
-	"error": {
-		"description": error.description,
-		"type" : error.errorType
-	}
-}]]></ee:set-variable>
-				</ee:variables>
-			</ee:transform>
+		<on-error-propagate enableNotifications="true" logException="false" doc:name="On Error Propagate" doc:id="5735542d-f4d5-4a24-a944-74ea13be6df1" >
 			<flow-ref doc:name="Call Error Log Flow Reference" doc:id="403d1322-36cd-44ea-8ba2-838a2eb0bade" name="log-error-subFlow"/>
 		</on-error-propagate>
 	</error-handler>
