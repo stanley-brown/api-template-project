@@ -6,7 +6,7 @@ autodiscovery.flow: "main"
 
 log:
   includePayload: "true"    
-  attributes: "requestPath, method, queryParams"
+  attributes: "requestPath, method, queryString"
   
 https:
   listener:
@@ -22,5 +22,5 @@ https:
       response: "40000"
       
 tls:
-  path: "tls/mule.jks"
+  path: "tls/mule.jceks"
   alias: "mule"
