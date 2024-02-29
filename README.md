@@ -15,6 +15,24 @@ To set a custom message for a log subflow just set the variable "logMessage" bef
 
 Customize this based on customer needs.  It is also possible to externalize the log flow in to its own dependent asset if needed.  This has its own pros and cons with keeping projects up to date.
 
+## Error Handling
+There is a default, global error handler flow located in the global config.  This immediately calls out to the logging config log-error-subFlow sub flow.  This subflow will create a JSON error message and log it out using the standard logging component with level "ERROR".
+
+If this error is part of an HTTP API request, then the set-http-response-payload subFlow is called.  This subflow serves two purposes:
+
+1. Create a JSON response payload to send back to the requestor.
+2. Set the HTTP status code variable
+
+This HTTP response payload consists of two elements: the HTTP response code abd textual description of the error reason.  Many of the APIKIT and HTTP errors are already handled in the dataweave script set-http-response.  The default, when no match is found, is this:
+```
+{
+  "code": 500,
+  "reason": "Server Error"
+}
+```
+
+Additional or custom errors can be added by implmentors by simply adding or changing the dataweave script.
+
 ## How To Use
 Before you can deploy the template to a target organzation's Anypoint Exchange (or other asset management system), you will need to update the pom.xml.  The main part to edit is the groupId at the top from "org-id-goes-here" to whatever unique identifier target org Exchange you will be deploying to.
 
