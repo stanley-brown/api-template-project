@@ -1,0 +1,6 @@
+deploy.sh
+exchange-docs
+pom.xml.bkp
+README.md
+**/src/main/resources/weave
+_muleExclude

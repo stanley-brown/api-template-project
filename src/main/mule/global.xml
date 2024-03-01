@@ -49,10 +49,6 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
     <global-property doc:name="Global Property" doc:id="6622f7de-8f9e-462b-95be-e4db2fd4c2e9" name="mule.env" value="local" doc:description="Mule environment property"/>
 	<global-property doc:name="Global Property" doc:id="91894c46-960e-475d-ab09-da904edf64df" name="secure.key" value="1234567890123456" doc:description="Mule secure key property"/>
 	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="4b391e72-cfd8-4fb5-9acd-e71f36aa383a" flowRef="${autodiscovery.flow}"/>
-	<error-handler name="globalError_Handler" doc:id="15b66dcc-8092-4246-b139-596d7d7012e9" >
-		<on-error-propagate enableNotifications="true" logException="false" doc:name="On Error Propagate" doc:id="5735542d-f4d5-4a24-a944-74ea13be6df1" >
-			<flow-ref doc:name="Call Error Log Flow Reference" doc:id="403d1322-36cd-44ea-8ba2-838a2eb0bade" name="log-error-subFlow"/>
-		</on-error-propagate>
-	</error-handler>
-   
+	<import doc:name="Import Logging Config" doc:id="a41aa308-56e2-4aae-bd77-935c98d035c9" file="logging.xml" doc:description="Imports logging flows from common-core-plugin"/>
+	<import doc:name="Import Error Handler Config" doc:id="e8d118a5-f1ff-4d30-8158-a5ac556c8e55" file="error-handler.xml" doc:description="Imports error handling flows from common-core-plugin"/>
 </mule>
