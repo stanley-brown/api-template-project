@@ -1,5 +1,5 @@
 api:
-  id: ""  # Auto-discovery
+  id: "1234"  # Auto-discovery
 
 # The main flow of the API 
 autodiscovery.flow: "main"
