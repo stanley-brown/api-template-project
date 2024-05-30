@@ -9,9 +9,19 @@
         see them in the mule_ee.log file. -->
 
     <Appenders>
-        <RollingFile name="file" fileName="${sys:mule.home}${sys:file.separator}logs${sys:file.separator}${project.groupId}.log" 
+        <RollingFile name="file" fileName="${sys:mule.home}${sys:file.separator}logs${sys:file.separator}${project.artifactId}.log" 
                  filePattern="${sys:mule.home}${sys:file.separator}logs${sys:file.separator}${project.groupId}-%i.log">
             <PatternLayout pattern="%-5p %d [%t] [processor: %X{processorPath}; event: %X{correlationId}] %c: %m%n" />
+            <!--  alternative using json -->
+            <!--
+			<JsonLayout complete="false" compact="true"	eventEol="true" properties="true" locationInfo="false">
+				<KeyValuePair key="appName" value="${project.name}" />
+				<KeyValuePair key="groupId" value="${project.groupId}" />
+				<KeyValuePair key="artifactId" value="${project.artifactId}" />
+				<KeyValuePair key="version" value="${project.version}" />
+				<KeyValuePair key="host" value="${hostName}" />
+			</JsonLayout>            
+            -->
             <SizeBasedTriggeringPolicy size="10 MB" />
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>

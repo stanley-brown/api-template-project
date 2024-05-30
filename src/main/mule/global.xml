@@ -36,8 +36,8 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		doc:id="9523b5c6-35ef-4b4d-8c00-536a2c86291d"
 		file="properties/secure-${mule.env}.yaml" key="${secure.key}" doc:description="Secure environment properties"/>
 	<tls:context name="tls-context" doc:name="TLS Context" doc:id="e4729b40-27d9-4a06-a40c-d090f712dfe6" >
-		<tls:trust-store insecure="true" />
-		<tls:key-store type="jceks" path="${tls.path}" alias="${tls.alias}" keyPassword="${secure::tls.key-password}" password="${secure::tls.password}" />
+		<tls:trust-store insecure="${tls.insecure}" />
+		<tls:key-store type="${tls.type}" path="${tls.path}" alias="${tls.alias}" keyPassword="${secure::tls.key-password}" password="${secure::tls.password}" />
 	</tls:context>
    
      <http:listener-config name="https-listener-config" doc:description="Configuration for HTTP/S Listener">

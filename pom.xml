@@ -10,8 +10,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<app.runtime>4.5.3</app.runtime>
-		<mule.maven.plugin.version>4.0.0</mule.maven.plugin.version>
+		<app.runtime>4.6.2</app.runtime>
+		<mule.maven.plugin.version>4.1.0</mule.maven.plugin.version>
 		<common.core.plugin.version>1.0.0</common.core.plugin.version>
 		<!-- project specific properties -->
 		<mule.visualizer.layer>System</mule.visualizer.layer>
@@ -19,6 +19,7 @@
 		<tags/>
 		<categories>[]</categories>
 		<fields>[]</fields>
+		<!-- platform specific properties -->
 		<!-- cloudhub 1.0 -->
 		<worker.count>1</worker.count>
 		<worker.size>micro</worker.size>
@@ -27,10 +28,12 @@
 		<vcores/>
 		<!-- 0.1, 0.2, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 -->
 		<!-- onprem -->
-		<target/>
+		<!-- server, server group, or cluster name -->
+		<deployTarget/>
 		<!--  server, cluster, or group name -->
-		<targetType/>
+		<deployTargetType>cluster</deployTargetType>
 		<!--  server, serverGroup, or cluster -->
+		<deployBusinessGroupId>${project.groupId}</deployBusinessGroupId>
 	</properties>
 	<build>
 		<resources>
@@ -211,8 +214,8 @@
 						<skip>true</skip>
 						<muleVersion>${app.runtime}</muleVersion>
 						<uri>https://anypoint.mulesoft.com</uri>
-						<target>${target}</target>
-						<targetType>server</targetType>
+						<target>${deployTarget}</target>
+						<targetType>${deployTargetType}</targetType>
 						<!-- authentication method, pick one and remove others -->
 						<!-- username + password -->
 						<!-- 
@@ -232,7 +235,7 @@
 							<connectedAppGrantType>client_credentials</connectedAppGrantType>
 						 -->
 						<environment>${environment}</environment>
-						<businessGroupId>${project.groupId}</businessGroupId>
+						<businessGroupId>${deployBusinessGroupId}</businessGroupId>
 						<properties>
 							<key>value</key>
 						</properties>
@@ -261,21 +264,21 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>common-core-plugin</artifactId>
+			<version>${common.core.plugin.version}</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
-			<version>1.10.3</version>
+			<version>1.10.4</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-http-connector</artifactId>
-			<version>1.9.1</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>common-core-plugin</artifactId>
-			<version>${common.core.plugin.version}</version>
+			<version>1.9.3</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
