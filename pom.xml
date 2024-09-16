@@ -11,7 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<app.runtime>4.6.2</app.runtime>
-		<mule.maven.plugin.version>4.1.0</mule.maven.plugin.version>
+		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
 		<common.core.plugin.version>1.0.0</common.core.plugin.version>
 		<!-- project specific properties -->
 		<mule.visualizer.layer>System</mule.visualizer.layer>
@@ -30,9 +30,9 @@
 		<!-- onprem -->
 		<!-- server, server group, or cluster name -->
 		<deployTarget/>
-		<!--  server, cluster, or group name -->
+		<!-- server, cluster, or group name -->
 		<deployTargetType>cluster</deployTargetType>
-		<!--  server, serverGroup, or cluster -->
+		<!-- server, serverGroup, or cluster -->
 		<deployBusinessGroupId>${project.groupId}</deployBusinessGroupId>
 	</properties>
 	<build>
@@ -77,22 +77,15 @@
 						<muleVersion>${muleVersion}</muleVersion>
 						<!-- authentication method, pick one and remove others -->
 						<!-- username + password -->
-						<!-- 
-							<username>${anypoint.username}</username>
-							<password>${anypoint.password}</password>
-							 -->
+						<!-- <username>${anypoint.username}</username> <password>${anypoint.password}</password> -->
 						<!-- server. creds are in server.xml -->
-						<!-- 
-							<server/>
-							-->
+						<!-- <server/> -->
 						<!-- authorization token from identity management (sso) -->
 						<!-- <authToken/> -->
 						<!-- connected app authentication -->
-						<!-- 
-							<connectedAppClientId>${connectedapp.client_id}</connectedAppClientId>
-							<connectedAppClientSecret>${connectedapp.client_secret}</connectedAppClientSecret>
-							<connectedAppGrantType>client_credentials</connectedAppGrantType>
-						 -->
+						<!-- <connectedAppClientId>${connectedapp.client_id}</connectedAppClientId> 
+							<connectedAppClientSecret>${connectedapp.client_secret}</connectedAppClientSecret> 
+							<connectedAppGrantType>client_credentials</connectedAppGrantType> -->
 						<environment>${environment}</environment>
 						<applicationName>${project.name}</applicationName>
 						<businessGroupId>${project.groupId}</businessGroupId>
@@ -115,32 +108,27 @@
 						<uri>https://anypoint.mulesoft.com</uri>
 						<provider>MC</provider>
 						<environment>${environment}</environment>
-						<!-- muleVersion is optional.  mmp 4.1.0 and above supports release channel and java versioning semantics -->
+						<!-- muleVersion is optional. mmp 4.1.0 and above supports release 
+							channel and java versioning semantics -->
 						<!-- <muleVersion>4.6-e-java17</muleVersion> -->
-						<!-- javaVersion is optional.  Supported values are 8 and 17  -->
-						<!--  <javaVersion>17</javaVersion> -->
-						<!-- releaseChannel is optional.  Suported values are NONE, EDGE, and LTS -->
-						<!--  <releaseChannel></releaseChannel> -->
+						<!-- javaVersion is optional. Supported values are 8 and 17 -->
+						<!-- <javaVersion>17</javaVersion> -->
+						<!-- releaseChannel is optional. Suported values are NONE, EDGE, and 
+							LTS -->
+						<!-- <releaseChannel></releaseChannel> -->
 						<!-- defined targets found here: https://docs.mulesoft.com/cloudhub-2/ch2-architecture#regions-and-dns-records -->
 						<target>Cloudhub-US-East-2</target>
 						<!-- authentication method, pick one and remove others -->
 						<!-- username + password -->
-						<!-- 
-							<username>${anypoint.username}</username>
-							<password>${anypoint.password}</password>
-							 -->
+						<!-- <username>${anypoint.username}</username> <password>${anypoint.password}</password> -->
 						<!-- server. creds are in server.xml -->
-						<!-- 
-							<server/>
-							-->
+						<!-- <server/> -->
 						<!-- authorization token from identity management (sso) -->
 						<!-- <authToken/> -->
 						<!-- connected app authentication -->
-						<!-- 
-							<connectedAppClientId>${connectedapp.client_id}</connectedAppClientId>
-							<connectedAppClientSecret>${connectedapp.client_secret}</connectedAppClientSecret>
-							<connectedAppGrantType>client_credentials</connectedAppGrantType>
-						 -->
+						<!-- <connectedAppClientId>${connectedapp.client_id}</connectedAppClientId> 
+							<connectedAppClientSecret>${connectedapp.client_secret}</connectedAppClientSecret> 
+							<connectedAppGrantType>client_credentials</connectedAppGrantType> -->
 						<applicationName>${project.name}</applicationName>
 						<businessGroupId>${project.groupId}</businessGroupId>
 						<replicas>${replicas}</replicas>
@@ -184,7 +172,12 @@
 						<provider>${provider}</provider>
 						<replicas>${replicas}</replicas>
 						<properties>
-							<key>value</key>
+							<mule.env>${environment}</mule.env>
+							<secure.key>${secure.key}</secure.key>
+							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
+							<anypoint.platform.visualizer.layer>${mule.visualizer.layer}</anypoint.platform.visualizer.layer>
+							<anypoint.platform.config.analytics.agent.enabled>true</anypoint.platform.config.analytics.agent.enabled>
 						</properties>
 						<deploymentSettings>
 							<enforceDeployingReplicasAcrossNodes>${isReplicaAcrossNodes}</enforceDeployingReplicasAcrossNodes>
@@ -219,25 +212,26 @@
 						<!-- authentication method, pick one and remove others -->
 						<!-- username + password -->
 						<!-- 
-							<username>${anypoint.username}</username>
-							<password>${anypoint.password}</password>
-							 -->
-						<!-- server. creds are in server.xml -->
-						<!-- 
-							<server/>
+							<username>${anypoint.username}</username> 
+							<password>${anypoint.password}</password> 
 							-->
+						<!-- server. creds are in server.xml -->
+						<!-- <server/> -->
 						<!-- authorization token from identity management (sso) -->
 						<!-- <authToken/> -->
 						<!-- connected app authentication -->
-						<!-- 
-							<connectedAppClientId>${connectedapp.client_id}</connectedAppClientId>
-							<connectedAppClientSecret>${connectedapp.client_secret}</connectedAppClientSecret>
-							<connectedAppGrantType>client_credentials</connectedAppGrantType>
-						 -->
+						<!-- <connectedAppClientId>${connectedapp.client_id}</connectedAppClientId> 
+							<connectedAppClientSecret>${connectedapp.client_secret}</connectedAppClientSecret> 
+							<connectedAppGrantType>client_credentials</connectedAppGrantType> -->
 						<environment>${environment}</environment>
 						<businessGroupId>${deployBusinessGroupId}</businessGroupId>
 						<properties>
-							<key>value</key>
+							<mule.env>${environment}</mule.env>
+							<secure.key>${secure.key}</secure.key>
+							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
+							<anypoint.platform.visualizer.layer>${mule.visualizer.layer}</anypoint.platform.visualizer.layer>
+							<anypoint.platform.config.analytics.agent.enabled>true</anypoint.platform.config.analytics.agent.enabled>
 						</properties>
 					</armDeployment>
 				</configuration>
@@ -292,21 +286,21 @@
 	</distributionManagement>
 	<repositories>
 		<repository>
+			<id>MuleRepository</id>
+			<name>MuleRepository</name>
+			<url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
 			<id>anypoint-exchange-v3</id>
 			<name>Anypoint Exchange</name>
 			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>anypoint-exchange-v2</id>
-			<name>Anypoint Exchange</name>
-			<url>https://maven.anypoint.mulesoft.com/api/v2/maven</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>anypoint-exchange</id>
-			<name>Anypoint Exchange</name>
-			<url>https://maven.anypoint.mulesoft.com/api/v1/maven</url>
 			<layout>default</layout>
 		</repository>
 		<repository>
