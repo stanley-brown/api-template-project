@@ -5,9 +5,9 @@ api:
 autodiscovery.flow: "main"
 
 log:
-  includePayload: "true"    
+  payload: "true"    
   attributes: "requestPath, method, queryString"
-
+  
 https:
   listener:
     host: "0.0.0.0"
@@ -22,7 +22,9 @@ https:
       response: "40000"
       
 tls:
-  insecure: "true"
+  insecure: "false"
   type: "JCEKS"
   path: "tls/mule.jceks"
   alias: "mule"
+  key-password: "mule"
+  password: "mule"

@@ -1,11 +1,11 @@
 api:
-  id: "1234"  # Auto-discovery
+  id: ""  # Auto-discovery
 
 # The main flow of the API 
 autodiscovery.flow: "main"
 
 log:
-  includePayload: "true"    
+  payload: "false"    
   attributes: "requestPath, method, queryString"
 
 https:
@@ -22,7 +22,9 @@ https:
       response: "40000"
       
 tls:
-  insecure: "true"
+  insecure: "false"
   type: "JCEKS"
   path: "tls/mule.jceks"
   alias: "mule"
+  key-password: "mule"
+  password: "mule"

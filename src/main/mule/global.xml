@@ -23,18 +23,18 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	<configuration-properties
 		doc:name="Common Configuration properties"
 		doc:id="04d86592-3f72-4d90-b00d-d5b9b5ccaebd"
-		file="properties/common.yaml"
+		file="config/common.yaml"
 		doc:description="Common properties" />
 	<configuration-properties
 		doc:name="Environment Configuration properties"
 		doc:id="0b953c3b-775e-431c-9193-f5c040328150"
 		doc:description="Environment specific properties"
-		file="properties/${mule.env}.yaml" />
+		file="config/${mule.env}.yaml" />
 	<secure-properties:config
 		name="secure-properties-config"
 		doc:name="Secure Configuration properties"
 		doc:id="9523b5c6-35ef-4b4d-8c00-536a2c86291d"
-		file="properties/secure-${mule.env}.yaml" key="${secure.key}" doc:description="Secure environment properties"/>
+		file="config/${mule.env}.yaml" key="${secure.key}" doc:description="Secure environment properties"/>
 	<tls:context name="tls-context" doc:name="TLS Context" doc:id="e4729b40-27d9-4a06-a40c-d090f712dfe6" >
 		<tls:trust-store insecure="${tls.insecure}" />
 		<tls:key-store type="${tls.type}" path="${tls.path}" alias="${tls.alias}" keyPassword="${secure::tls.key-password}" password="${secure::tls.password}" />
