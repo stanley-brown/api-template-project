@@ -5,26 +5,22 @@ api:
 autodiscovery.flow: "main"
 
 log:
-  payload: "false"    
+  payload.maxSize: "4096"    
   attributes: "requestPath, method, queryString"
 
 https:
   listener:
     host: "0.0.0.0"
     timeout:
-      connection-idle: "600000"
-  private:
-    port: "8092"
-  port: "8082"
+      connection-idle: "40000"
   request:
     timeout:
-      connection-idle: "400000"
-      response: "40000"
+      response: "10000"
       
 tls:
-  insecure: "false"
+  insecure: "true"
   type: "JCEKS"
-  path: "tls/mule.jceks"
+  path: "keystores/mule.jceks"
   alias: "mule"
   key-password: "mule"
   password: "mule"

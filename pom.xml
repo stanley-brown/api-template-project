@@ -3,37 +3,76 @@
 	<name>api-template-project</name>
 	<description>This is a template project for creating mule API apps</description>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ORG_ID_TOKEN</groupId>
-	<artifactId>${project.name}</artifactId>
-	<version>1.0.0</version>
+	<groupId>4c9a71d5-aec0-4cfc-86fc-252dda88e65f</groupId>
+	<artifactId>api-template-project</artifactId>
+	<version>1.0.1</version>
 	<packaging>mule-application</packaging>
 	<properties>
+		<!-- generic -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<app.runtime>4.6.2</app.runtime>
-		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
-		<common.core.plugin.version>1.0.0</common.core.plugin.version>
+		<app.runtime>4.6.9:11</app.runtime>
+		<mule.maven.plugin.version>4.3.1</mule.maven.plugin.version>
+		<common.core.plugin.version>1.0.0-SNAPSHOT</common.core.plugin.version>
 		<!-- project specific properties -->
 		<mule.visualizer.layer>System</mule.visualizer.layer>
-		<environment/>
+		<!-- System, Experience, Process, Batch -->
 		<tags/>
 		<categories>[]</categories>
 		<fields>[]</fields>
+		<!-- for automated deployments -->
+		<deployment.env>set with -Ddeployment.env=...</deployment.env>
+		<deployment.prefix>set with -Ddeployment.prefix=...</deployment.prefix>
+		<deployment.suffix>-${deployment.env}</deployment.suffix>
+		<deployment.name>${deployment.prefix}${project.artifactId}${deployment.suffix}</deployment.name>
 		<!-- platform specific properties -->
 		<!-- cloudhub 1.0 -->
-		<worker.count>1</worker.count>
-		<worker.size>micro</worker.size>
+		<ch1.businessGroupId>${project.groupId}</ch1.businessGroupId>
+		<ch1.muleVersion>${app.runtime}</ch1.muleVersion>
+		<ch1.javaVersion>17</ch1.javaVersion>
+		<ch1.releaseChannel>LTS</ch1.releaseChannel>
+		<ch1.region>us-east-1</ch1.region>
+		<ch1.worker.count>1</ch1.worker.count>
+		<ch1.worker.size>SMALL</ch1.worker.size>
+		<ch1.objectStoreV2>false</ch1.objectStoreV2>
+		<ch1.persistentQueues>false</ch1.persistentQueues>
+		<ch1.applyLatestRuntimePatch>false</ch1.applyLatestRuntimePatch>
+		<ch1.disableCloudHubLogs>false</ch1.disableCloudHubLogs>
 		<!-- cloudhub 2.0 -->
-		<replicas>1</replicas>
-		<vcores/>
-		<!-- 0.1, 0.2, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 -->
-		<!-- onprem -->
-		<!-- server, server group, or cluster name -->
-		<deployTarget/>
-		<!-- server, cluster, or group name -->
-		<deployTargetType>cluster</deployTargetType>
+		<ch2.businessGroupId>${project.groupId}</ch2.businessGroupId>
+		<ch2.muleVersion>${app.runtime}</ch2.muleVersion>
+		<ch2.javaVersion>17</ch2.javaVersion>
+		<ch2.releaseChannel>LTS</ch2.releaseChannel>
+		<ch2.target>Cloudhub-US-East-1</ch2.target>
+		<ch2.replicas>1</ch2.replicas>
+		<!--  values 1-16 -->
+		<ch2.vcores>0.2</ch2.vcores>
+		<ch2.publicURLs/>
+		<ch2.forwardSslSession>false</ch2.forwardSslSession>
+		<ch2.lastMileSecurity>false</ch2.lastMileSecurity>
+		<ch2.generateDefaultPublicUrl>false</ch2.generateDefaultPublicUrl>
+		<ch2.updateStrategy>rolling</ch2.updateStrategy>
+		<!--  rolling or recreate -->
+		<ch2.clustered>false</ch2.clustered>
+		<ch2.enforceDeployingReplicasAcrossNodes>false</ch2.enforceDeployingReplicasAcrossNodes>
+		<ch2.disableAmLogForwarding>false</ch2.disableAmLogForwarding>
+		<ch2.autoscale.enabled>false</ch2.autoscale.enabled>
+		<ch2.autoscale.minReplicas>1</ch2.autoscale.minReplicas>
+		<!--  values 1,2, or 3 -->
+		<ch2.autoscale.maxReplicas>3</ch2.autoscale.maxReplicas>
+		<!--  values 2-16 -->
+		<ch2.objectStoreV2.enabled>false</ch2.objectStoreV2.enabled>
+		<!-- standalone -->
+		<standalone.businessGroupId>${project.groupId}</standalone.businessGroupId>
+		<standalone.muleVersion>${app.runtime}</standalone.muleVersion>
+		<standalone.muleHome/>
+		<standalone.target/>
+		<standalone.targetType>server</standalone.targetType>
+		<!--  server, serverGroup, cluster -->
+		<standalone.skipDeploymentVerification>false</standalone.skipDeploymentVerification>
 		<!-- server, serverGroup, or cluster -->
 		<deployBusinessGroupId>${project.groupId}</deployBusinessGroupId>
+		<munit.version>3.2.0</munit.version>
 	</properties>
 	<build>
 		<resources>
@@ -56,12 +95,29 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.0.2</version>
+				<version>3.3.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.4.0</version>
+			</plugin>
+			<plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+	            <artifactId>versions-maven-plugin</artifactId>
+	            <version>2.18.0</version>
+	        </plugin>			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<compilerArgs>
+						<args/>
+					</compilerArgs>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
@@ -69,12 +125,14 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<classifier>mule-application-template</classifier>
 					<!-- CloudHub 1.0 Deployment Configuration -->
 					<cloudHubDeployment>
 						<skip>true</skip>
 						<uri>https://anypoint.mulesoft.com</uri>
-						<muleVersion>${muleVersion}</muleVersion>
+						<muleVersion>${ch1.muleVersion}</muleVersion>
+						<javaVersion>${ch1.javaVersion}</javaVersion>
+						<releaseChannel>${ch1.releaseChannel}</releaseChannel>
+						<region>${ch1.region}</region>
 						<!-- authentication method, pick one and remove others -->
 						<!-- username + password -->
 						<!-- <username>${anypoint.username}</username> <password>${anypoint.password}</password> -->
@@ -86,15 +144,18 @@
 						<!-- <connectedAppClientId>${connectedapp.client_id}</connectedAppClientId> 
 							<connectedAppClientSecret>${connectedapp.client_secret}</connectedAppClientSecret> 
 							<connectedAppGrantType>client_credentials</connectedAppGrantType> -->
-						<environment>${environment}</environment>
-						<applicationName>${project.name}</applicationName>
-						<businessGroupId>${project.groupId}</businessGroupId>
-						<region>${region}</region>
-						<workers>${mule.ch10.worker.count}</workers>
-						<workerType>${mule.ch10.worker.size}</workerType>
-						<objectStoreV2>true</objectStoreV2>
+						<environment>${deployment.env}</environment>
+						<applicationName>${deployment.name}</applicationName>
+						<businessGroupId>${ch1.businessGroupId}</businessGroupId>
+						<region>${ch1.region}</region>
+						<workers>${ch1.worker.count}</workers>
+						<workerType>${ch1.worker.size}</workerType>
+						<objectStoreV2>${ch1.objectStoreV2}</objectStoreV2>
+						<persistentQueues>${ch1.persistentQueues}</persistentQueues>
+						<applyLatestRuntimePatch>${ch1.applyLatestRuntimePatch}</applyLatestRuntimePatch>
+						<disableCloudHubLogs>${ch1.disableCloudHubLogs}</disableCloudHubLogs>
 						<properties>
-							<mule.env>${environment}</mule.env>
+							<mule.env>${deployment.env}</mule.env>
 							<secure.key>${secure.key}</secure.key>
 							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
 							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
@@ -107,43 +168,49 @@
 						<skip>true</skip>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<provider>MC</provider>
-						<environment>${environment}</environment>
+						<environment>${deployment.env}</environment>
 						<!-- muleVersion is optional. mmp 4.1.0 and above supports release 
 							channel and java versioning semantics -->
-						<!-- <muleVersion>4.6-e-java17</muleVersion> -->
-						<!-- javaVersion is optional. Supported values are 8 and 17 -->
-						<!-- <javaVersion>17</javaVersion> -->
-						<!-- releaseChannel is optional. Suported values are NONE, EDGE, and 
-							LTS -->
-						<!-- <releaseChannel></releaseChannel> -->
-						<!-- defined targets found here: https://docs.mulesoft.com/cloudhub-2/ch2-architecture#regions-and-dns-records -->
-						<target>Cloudhub-US-East-2</target>
-						<!-- authentication method, pick one and remove others -->
-						<!-- username + password -->
+						<muleVersion>${ch2.muleVersion}</muleVersion>
+						<javaVersion>${ch2.javaVersion}</javaVersion>
+						<releaseChannel>${ch2.releaseChannel}</releaseChannel>
+						<target>${ch2.target}</target>
+						<!-- ## authentication method, pick one and remove others ## -->
+						<!-- ### username + password ### -->
 						<!-- <username>${anypoint.username}</username> <password>${anypoint.password}</password> -->
-						<!-- server. creds are in server.xml -->
+						<!-- ### server. creds are in server.xml ### -->
 						<!-- <server/> -->
-						<!-- authorization token from identity management (sso) -->
+						<!-- ### authorization token from identity management (sso) ### -->
 						<!-- <authToken/> -->
-						<!-- connected app authentication -->
+						<!-- ### Connected App Authentication ### -->
 						<!-- <connectedAppClientId>${connectedapp.client_id}</connectedAppClientId> 
 							<connectedAppClientSecret>${connectedapp.client_secret}</connectedAppClientSecret> 
 							<connectedAppGrantType>client_credentials</connectedAppGrantType> -->
-						<applicationName>${project.name}</applicationName>
-						<businessGroupId>${project.groupId}</businessGroupId>
-						<replicas>${replicas}</replicas>
-						<vCores>${vcores}</vCores>
+						<applicationName>${deployment.name}</applicationName>
+						<businessGroupId>${ch2.businessGroupId}</businessGroupId>
+						<replicas>${ch2.replicas}</replicas>
+						<vCores>${ch2.vcores}</vCores>
 						<deploymentSettings>
 							<http>
 								<inbound>
-									<publicUrl>${publicURL}</publicUrl>
-									<forwardSslSession>true</forwardSslSession>
-									<lastMileSecurity>true</lastMileSecurity>
+									<publicUrl>${ch2.publicURLs}</publicUrl>
+									<forwardSslSession>${ch2.forwardSslSession}</forwardSslSession>
+									<lastMileSecurity>${ch2.lastMileSecurity}</lastMileSecurity>
 								</inbound>
 							</http>
+							<generateDefaultPublicUrl>${ch2.generateDefaultPublicUrl}</generateDefaultPublicUrl>
+							<updateStrategy>${ch2.updateStrategy}</updateStrategy>
+							<clustered>${ch2.clustered}</clustered>
+							<enforceDeployingReplicasAcrossNodes>${ch2.enforceDeployingReplicasAcrossNodes}</enforceDeployingReplicasAcrossNodes>
+							<disableAmLogForwarding>${ch2.disableAmLogForwarding}</disableAmLogForwarding>
+							<autoscaling>
+								<enabled>${ch2.autoscale.enabled}</enabled>
+								<minReplicas>${ch2.autoscale.minReplicas}</minReplicas>
+								<maxReplicas>${ch2.autoscale.maxReplicas}</maxReplicas>
+							</autoscaling>
 						</deploymentSettings>
 						<properties>
-							<mule.env>${environment}</mule.env>
+							<mule.env>${deployment.env}</mule.env>
 							<secure.key>${secure.key}</secure.key>
 							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
 							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
@@ -153,7 +220,7 @@
 						<integrations>
 							<services>
 								<objectStoreV2>
-									<enabled>true</enabled>
+									<enabled>${ch2.objectStoreV2.enabled}</enabled>
 								</objectStoreV2>
 							</services>
 						</integrations>
@@ -166,13 +233,13 @@
 						<server>${project.name}</server>
 						<connectedAppGrantType>client_credentials</connectedAppGrantType>
 						<applicationName>${runtime.fabric.application.name}</applicationName>
-						<businessGroupId>${businessgroup.id}</businessGroupId>
+						<businessGroupId>${rtf.businessGroupId}</businessGroupId>
 						<target>${target}</target>
-						<environment>${environment}</environment>
+						<environment>${deployment.env}</environment>
 						<provider>${provider}</provider>
 						<replicas>${replicas}</replicas>
 						<properties>
-							<mule.env>${environment}</mule.env>
+							<mule.env>${deployment.env}</mule.env>
 							<secure.key>${secure.key}</secure.key>
 							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
 							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
@@ -205,10 +272,10 @@
 					<!-- ARM (on-premise deploy via rest ) -->
 					<armDeployment>
 						<skip>true</skip>
-						<muleVersion>${app.runtime}</muleVersion>
+						<muleVersion>${standalone.muleVersion}</muleVersion>
 						<uri>https://anypoint.mulesoft.com</uri>
-						<target>${deployTarget}</target>
-						<targetType>${deployTargetType}</targetType>
+						<target>${standalone.deployTarget}</target>
+						<targetType>${standalone.deployTargetType}</targetType>
 						<!-- authentication method, pick one and remove others -->
 						<!-- username + password -->
 						<!-- 
@@ -223,10 +290,12 @@
 						<!-- <connectedAppClientId>${connectedapp.client_id}</connectedAppClientId> 
 							<connectedAppClientSecret>${connectedapp.client_secret}</connectedAppClientSecret> 
 							<connectedAppGrantType>client_credentials</connectedAppGrantType> -->
-						<environment>${environment}</environment>
-						<businessGroupId>${deployBusinessGroupId}</businessGroupId>
+						<environment>${deployment.env}</environment>
+						<applicationName>${deployment.name}</applicationName>
+						<businessGroupId>${standalone.businessGroupId}</businessGroupId>
+						<skipDeploymentVerification>${standalone.skipDeploymentVerification}</skipDeploymentVerification>
 						<properties>
-							<mule.env>${environment}</mule.env>
+							<mule.env>${deployment.env}</mule.env>
 							<secure.key>${secure.key}</secure.key>
 							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
 							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
@@ -234,6 +303,29 @@
 							<anypoint.platform.config.analytics.agent.enabled>true</anypoint.platform.config.analytics.agent.enabled>
 						</properties>
 					</armDeployment>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.mulesoft.munit.tools</groupId>
+				<artifactId>munit-maven-plugin</artifactId>
+				<version>${munit.version}</version>
+				<executions>
+					<execution>
+						<id>test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+							<goal>coverage-report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<coverage>
+						<runCoverage>true</runCoverage>
+						<formats>
+							<format>html</format>
+						</formats>
+					</coverage>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -265,40 +357,53 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
-			<artifactId>mule-http-connector</artifactId>
-			<version>1.10.2</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-sockets-connector</artifactId>
 			<version>1.2.5</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-http-connector</artifactId>
+			<version>1.10.3</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+		    <groupId>org.codehaus.mojo</groupId>
+		    <artifactId>versions-maven-plugin</artifactId>
+		    <version>2.18.0</version>
+		    <scope>provided</scope>
+		</dependency>		
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-runner</artifactId>
+			<version>3.3.2</version>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-tools</artifactId>
+			<version>3.2.0</version>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.weave</groupId>
+			<artifactId>assertions</artifactId>
+			<version>1.2.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<distributionManagement>
 		<repository>
-			<id>anypoint-exchange-v3</id>
-			<name>Anypoint Exchange</name>
+			<id>anypoint-exchange</id>
 			<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
 			<layout>default</layout>
 		</repository>
 	</distributionManagement>
 	<repositories>
 		<repository>
-			<id>MuleRepository</id>
-			<name>MuleRepository</name>
-			<url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>anypoint-exchange-v3</id>
+			<id>anypoint-exchange</id>
 			<name>Anypoint Exchange</name>
 			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
 			<layout>default</layout>
@@ -308,6 +413,11 @@
 			<name>MuleSoft Releases Repository</name>
 			<url>https://repository.mulesoft.org/releases/</url>
 			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>central-repository</id>
+			<name>Nexus Repo</name>
+			<url>https://repo1.maven.org/maven2/</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -319,10 +429,6 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>mule-public</id>
-			<url>https://repository.mulesoft.org/nexus/content/repositories/releases</url>
 		</pluginRepository>
 	</pluginRepositories>
 </project>

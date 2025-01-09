@@ -41,8 +41,10 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	</tls:context>
    
      <http:listener-config name="https-listener-config" doc:description="Configuration for HTTP/S Listener">
-        <http:listener-connection host="${https.listener.host}" port="${https.port}" protocol="HTTPS" tlsContext="tls-context">
-			<reconnection failsDeployment="true" />
+        <http:listener-connection host="${https.listener.host}" port="${https.port}" protocol="HTTPS" tlsContext="tls-context" connectionIdleTimeout="${https.listener.timeout.connection-idle}">
+			<reconnection>
+				<reconnect-forever />
+			</reconnection>
 		</http:listener-connection>
     </http:listener-config>
     
