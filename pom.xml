@@ -11,7 +11,7 @@
 		<!-- generic -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<app.runtime>4.6.9:11</app.runtime>
+		<app.runtime>4.8.0</app.runtime>
 		<mule.maven.plugin.version>4.3.1</mule.maven.plugin.version>
 		<common.core.plugin.version>1.0.0-SNAPSHOT</common.core.plugin.version>
 		<!-- project specific properties -->
