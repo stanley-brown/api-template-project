@@ -11,9 +11,9 @@
 		<!-- generic -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<app.runtime>4.8.0</app.runtime>
+		<app.runtime>4.8</app.runtime>
 		<mule.maven.plugin.version>4.3.1</mule.maven.plugin.version>
-		<common.core.plugin.version>1.0.0-SNAPSHOT</common.core.plugin.version>
+		<common.core.plugin.version>1.0.0</common.core.plugin.version>
 		<!-- project specific properties -->
 		<mule.visualizer.layer>System</mule.visualizer.layer>
 		<!-- System, Experience, Process, Batch -->
@@ -24,7 +24,7 @@
 		<deployment.env>set with -Ddeployment.env=...</deployment.env>
 		<deployment.prefix>set with -Ddeployment.prefix=...</deployment.prefix>
 		<deployment.suffix>-${deployment.env}</deployment.suffix>
-		<deployment.name>${deployment.prefix}${project.artifactId}${deployment.suffix}</deployment.name>
+		<deployment.name>${deployment.prefix}-${project.artifactId}${deployment.suffix}</deployment.name>
 		<!-- platform specific properties -->
 		<!-- cloudhub 1.0 -->
 		<ch1.businessGroupId>${project.groupId}</ch1.businessGroupId>
@@ -42,7 +42,7 @@
 		<ch2.businessGroupId>${project.groupId}</ch2.businessGroupId>
 		<ch2.muleVersion>${app.runtime}</ch2.muleVersion>
 		<ch2.javaVersion>17</ch2.javaVersion>
-		<ch2.releaseChannel>LTS</ch2.releaseChannel>
+		<ch2.releaseChannel>Edge</ch2.releaseChannel>
 		<ch2.target>Cloudhub-US-East-1</ch2.target>
 		<ch2.replicas>1</ch2.replicas>
 		<!--  values 1-16 -->
@@ -71,7 +71,6 @@
 		<!--  server, serverGroup, cluster -->
 		<standalone.skipDeploymentVerification>false</standalone.skipDeploymentVerification>
 		<!-- server, serverGroup, or cluster -->
-		<deployBusinessGroupId>${project.groupId}</deployBusinessGroupId>
 		<munit.version>3.2.0</munit.version>
 	</properties>
 	<build>
@@ -84,16 +83,28 @@
 				</excludes>
 				<filtering>true</filtering>
 			</resource>
-			<resource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</resource>
 		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/munit</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.3.1</version>
+				<configuration>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>p12</nonFilteredFileExtension>
+						<nonFilteredFileExtension>crt</nonFilteredFileExtension>
+						<nonFilteredFileExtension>pem</nonFilteredFileExtension>
+						<nonFilteredFileExtension>jks</nonFilteredFileExtension>
+						<nonFilteredFileExtension>jceks</nonFilteredFileExtension>
+						<nonFilteredFileExtension>pkcs12</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -209,12 +220,14 @@
 						</deploymentSettings>
 						<properties>
 							<mule.env>${deployment.env}</mule.env>
-							<secure.key>${secure.key}</secure.key>
-							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
-							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
 							<anypoint.platform.visualizer.layer>${mule.visualizer.layer}</anypoint.platform.visualizer.layer>
 							<anypoint.platform.config.analytics.agent.enabled>true</anypoint.platform.config.analytics.agent.enabled>
 						</properties>
+						<secureProperties>
+							<secure.key>${secure.key}</secure.key>
+							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
+						</secureProperties>
 						<integrations>
 							<services>
 								<objectStoreV2>
@@ -321,6 +334,7 @@
 					<coverage>
 						<runCoverage>true</runCoverage>
 						<formats>
+							<format>console</format>
 							<format>html</format>
 						</formats>
 					</coverage>
@@ -328,6 +342,20 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties/>
+		</profile>
+		<profile>
+			<id>uat</id>
+			<properties/>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties/>
+		</profile>
+	</profiles>
 	<dependencies>
 		<dependency>
 			<groupId>com.mulesoft.services</groupId>
@@ -381,7 +409,7 @@
 		<dependency>
 			<groupId>com.mulesoft.munit</groupId>
 			<artifactId>munit-tools</artifactId>
-			<version>3.2.0</version>
+			<version>${munit.version}</version>
 			<classifier>mule-plugin</classifier>
 			<scope>test</scope>
 		</dependency>

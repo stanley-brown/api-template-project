@@ -8,19 +8,10 @@ log:
   payload.maxSize: "4096"    
   attributes: "requestPath, method, queryString"
   
-https:
+http:
   listener:
-    host: "0.0.0.0"
     timeout:
       connection-idle: "40000"
   request:
     timeout:
       response: "10000"
-      
-tls:
-  insecure: "true"
-  type: "JCEKS"
-  path: "keystores/mule.jceks"
-  alias: "mule"
-  key-password: "mule"
-  password: "mule"
