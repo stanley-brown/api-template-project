@@ -9,6 +9,7 @@ log:
   attributes: "requestPath, method, queryString"
 
 http:
+  port: "8081"  # this is needed for local only
   listener:
     timeout:
       connection-idle: "40000"

@@ -1,7 +1,9 @@
 trigger:
   branches:
     include:
-      - '*'
+      - main
+      - uat
+      - develop
 
 pool:
   vmImage: ubuntu-latest
@@ -9,13 +11,24 @@ pool:
 
 # select variable group based on the branch being built
 variables:
-  - ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
-    - group: "anypoint-prod"
+  - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    - group: anypoint-prod
+    - name: mavenExtraArgs
+      value: versions:set -DremoveSnapshot=true -DgenerateBackupPoms=false -DinteractiveMode=false
   - ${{ elseif eq( variables['Build.SourceBranchName'], 'uat' ) }}:
-    - group: "anypoint-uat"
+    - group: anypoint-uat
+    - name: mavenExtraArgs
+      value: 
   - ${{ else }}:
-    - group: "anypoint-dev"   
+    - group: anypoint-dev
+    - name: mavenExtraArgs
+      value: 
 
+jobs:
+  - job: CleanWorkspaceJob
+    workspace:
+      clean: all
+  - job: BuildAndDeployJob
 steps:
 
 - task: Cache@2
@@ -29,25 +42,45 @@ steps:
   inputs:
     secureFile: 'settings.xml'
 
-- task: Maven@3
-  displayName: 'Clean and Package'
+    - task: Maven@4
+      displayName: 'Clean project'
+      inputs:
+        mavenPomFile: 'pom.xml'  
+        javaHomeOption: "JDKVersion"
+        jdkVersionOption: "1.8"
+        jdkArchitectureOption: "x64"    
+        goals: 'clean $(mavenExtraArgs)'
+        options: -s $(Agent.TempDirectory)/settings.xml
+      timeoutInMinutes: 20
+
+    - task: Maven@4
+      displayName: 'Deploy to Anypoint Exchange'
   inputs:
     mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'clean package'
+        javaHomeOption: "JDKVersion"
+        jdkVersionOption: "1.8"
+        jdkArchitectureOption: "x64"    
+        goals: 'deploy'
+        options: -s $(Agent.TempDirectory)/settings.xml
+      timeoutInMinutes: 20
 
-- task: Maven@3
-  displayName: 'Deploy to Mule Runtime'
+    - task: Maven@4
+      displayName: 'Deploy to Anypoint Runtime Manager'
   inputs:
     mavenPomFile: 'pom.xml'  
     javaHomeOption: "JDKVersion"
     jdkVersionOption: "1.8"
     jdkArchitectureOption: "x64"    
-    goals: '-DskipTests deploy -DmuleDeploy -X'
-    options: '-s $(Agent.TempDirectory)/settings.xml -DdeployTarget=$(deployTarget) -DdeployTargetType=$(deployTargetType) -DconnectedappClientId=$(connectedappClientId) -DconnectedappClientSecret=$(connectedappClientSecret) -DbusinessGroupId=$(businessGroupId) -Denvironment=$(environment)'    
+        goals: 'verify'
+        options: >
+          mule:deploy -U -V -e -B -s $(Agent.TempDirectory)/settings.xml
+          -Dmule.artifact=dummy.jar
+          -Dconnectedapp.client_id=$(connectedapp.client_id)
+          -Dconnectedapp.client_secret=$(connectedapp.client_secret)
+          -Danypoint.platform.client_id=$(anypoint.platform.client_id)
+          -Danypoint.platform.client_secret=$(anypoint.platform.client_secret)
+          -Dsecure.key=$(secure.key)
+          -Ddeployment.env=$(deployment.env)
+          -Ddeployment.prefix=$(deployment.prefix)
+          -P$(deployment.env)
   timeoutInMinutes: 20
