@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+	<servers>
+		<server>
+			<id>anypoint-exchange-{{org-id}}</id>
+			<username>~~~Client~~~</username>
+			<password>{{client-id}}~?~{{client-secret}}</password>
+		</server>
+        <server>
+            <id>releases-ee</id>
+            <username>{{nexusrepo-user-id}}</username>
+            <password>{{nexusrepo-password}}</password>
+        </server>		
+	</servers>
+	<profiles>
+		<profile>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>anypoint-exchange-v3</id>
+					<name>Anypoint Exchange V3</name>
+					<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+				</repository>
+				<repository>
+					<id>mulesoft-releases</id>
+					<name>MuleSoft Releases Repository</name>
+					<url>https://repository.mulesoft.org/releases/</url>
+				</repository>
+				<repository>
+					<id>releases-ee</id>
+					<name>Mule Release Repository</name>
+					<url>https://repository.mulesoft.org/nexus/content/repositories/releases-ee/</url>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
+</settings>
