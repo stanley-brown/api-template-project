@@ -77,10 +77,6 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>keystores/*</exclude>
-					<exclude>truststores/*</exclude>
-				</excludes>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
@@ -420,6 +416,12 @@
 		<repository>
 			<id>anypoint-exchange-${project.groupId}</id>
 			<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Anypoint Exchange V3</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
 			<layout>default</layout>
 		</repository>
 	</repositories>
