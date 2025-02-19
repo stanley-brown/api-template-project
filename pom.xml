@@ -82,7 +82,7 @@
 		</resources>
 		<testResources>
 			<testResource>
-				<directory>src/test/munit</directory>
+				<directory>src/test/resources</directory>
 				<filtering>true</filtering>
 			</testResource>
 		</testResources>
