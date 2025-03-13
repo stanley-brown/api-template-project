@@ -322,6 +322,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<argLine>-Dsecure.key=${secure.key}</argLine>
 					<coverage>
 						<runCoverage>true</runCoverage>
 						<formats>
@@ -348,12 +349,6 @@
 		</profile>
 	</profiles>
 	<dependencies>
-		<dependency>
-			<groupId>com.mulesoft.services</groupId>
-			<artifactId>mule-service-weave-ee</artifactId>
-			<version>2.5.2</version>
-			<scope>runtime</scope>
-		</dependency>
 		<dependency>
 			<groupId>com.mulesoft.modules</groupId>
 			<artifactId>mule-secure-configuration-property-module</artifactId>
@@ -401,7 +396,7 @@
 		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
-			<version>1.11.3</version>
+			<version>1.11.5</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
