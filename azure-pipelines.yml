@@ -7,7 +7,6 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
-  name: 'Default'
 
 # select variable group based on the branch being built
 variables:
@@ -61,7 +60,7 @@ steps:
         jdkVersionOption: "1.8"
         jdkArchitectureOption: "x64"    
         goals: 'deploy'
-        options: -s $(Agent.TempDirectory)/settings.xml
+        options: -s $(Agent.TempDirectory)/settings.xml -Dsecure.key=$(secure.key)
       timeoutInMinutes: 20
 
     - task: Maven@4
@@ -74,6 +73,7 @@ steps:
         goals: 'verify'
         options: >
           mule:deploy -U -V -e -B -s $(Agent.TempDirectory)/settings.xml
+          -DskipTests
           -Dmule.artifact=dummy.jar
           -Dconnectedapp.client_id=$(connectedapp.client_id)
           -Dconnectedapp.client_secret=$(connectedapp.client_secret)

@@ -11,7 +11,7 @@
 		<!-- generic -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<app.runtime>4.8</app.runtime>
+		<app.runtime>4.9</app.runtime>
 		<mule.maven.plugin.version>4.3.1</mule.maven.plugin.version>
 		<common.core.plugin.version>1.0.0</common.core.plugin.version>
 		<!-- project specific properties -->
@@ -71,7 +71,7 @@
 		<!--  server, serverGroup, cluster -->
 		<standalone.skipDeploymentVerification>false</standalone.skipDeploymentVerification>
 		<!-- server, serverGroup, or cluster -->
-		<munit.version>3.2.0</munit.version>
+		<munit.version>3.3.0</munit.version>
 	</properties>
 	<build>
 		<resources>
@@ -349,6 +349,12 @@
 		</profile>
 	</profiles>
 	<dependencies>
+		<dependency>
+			<groupId>com.mulesoft.services</groupId>
+			<artifactId>mule-service-weave-ee</artifactId>
+			<version>2.5.2</version>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.mulesoft.modules</groupId>
 			<artifactId>mule-secure-configuration-property-module</artifactId>
